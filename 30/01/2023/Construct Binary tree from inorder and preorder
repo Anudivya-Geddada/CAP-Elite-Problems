@@ -1,0 +1,38 @@
+public class TreeNode {
+ *     int val;
+ *     TreeNode left;
+ *     TreeNode right;
+ *     TreeNode() {}
+ *     TreeNode(int val) { this.val = val; }
+ *     TreeNode(int val, TreeNode left, TreeNode right) {
+ *         this.val = val;
+ *         this.left = left;
+ *         this.right = right;
+ *     }
+ * }
+ */
+class Solution {
+    public TreeNode buildTree(int[] preorder, int[] inorder) {
+        HashMap<Integer, Integer> inmap = new HashMap<>();
+        for (int i = 0; i < inorder.length; i++)
+            inmap.put(inorder[i], i);
+        return buildTree(preorder, 0, preorder.length - 1, inorder, 0, inorder.length - 1, inmap,new int[]{0});
+  }
+    public TreeNode buildTree(int[] preorder, int ps, int pe, int[] inorder, int is,
+                         int ie, Map<Integer, Integer> inmap,int[] curr) {
+        if (ps > pe || is > ie)
+            return null;
+
+        int ip = inmap.get(preorder[curr[0]++]);
+        int countleft = ip - is;
+        TreeNode root = new TreeNode(preorder[ps]);
+        root.left = buildTree(preorder, ps + 1, ps + countleft, inorder, is,
+                      ip - 1, inmap,curr);
+        root.right = buildTree(preorder, ps + countleft + 1, pe, inorder, ip + 1, ie,
+                       inmap,curr);
+
+        return root;
+    
+        
+    }
+}
