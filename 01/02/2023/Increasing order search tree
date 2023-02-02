@@ -1,0 +1,22 @@
+class Solution {
+    public TreeNode increasingBST(TreeNode root) {
+        ArrayList<Integer> arr = new ArrayList<>();
+        inorder(root,arr);
+        TreeNode node = new TreeNode(0);
+        TreeNode curr = node;
+        for(int i:arr)
+        {
+            curr.right = new TreeNode(i);
+            curr = curr.right;
+        }return node.right;
+        
+    }
+    public void inorder(TreeNode head,List<Integer> arr){
+        if(head==null)
+            return ;
+        inorder(head.left,arr);
+        arr.add(head.val);
+        inorder(head.right,arr);
+        
+    }
+}
