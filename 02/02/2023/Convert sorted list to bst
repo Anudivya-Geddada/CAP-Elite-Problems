@@ -1,0 +1,21 @@
+class Solution {
+    public TreeNode sortedListToBST(ListNode head) {
+       ArrayList<Integer> arr = new ArrayList<>();
+       ListNode temp = head;
+       while(temp!=null){
+           arr.add(temp.val);
+           temp = temp.next;
+       }
+       return ListToBST(arr,0,arr.size()-1);
+       
+    }
+    public TreeNode ListToBST(List<Integer> arr,int start,int end){
+        if(start>end)
+            return null;
+        int mid = (start+end)/2;
+        TreeNode node = new TreeNode(arr.get(mid));
+        node.left = ListToBST(arr,start,mid-1);
+        node.right = ListToBST(arr,mid+1,end);
+        return node;
+    }
+}
