@@ -1,0 +1,31 @@
+class Solution {
+    public TreeNode balanceBST(TreeNode root) {
+        if(root == null){
+            return root;
+        }
+        List<TreeNode> arr = new ArrayList<>();
+        inorder(root,arr);
+        return dfs(arr, 0, arr.size() - 1);
+        
+    }
+    
+    public TreeNode dfs(List<TreeNode> arr, int start, int end){
+        if(start <= end){
+            int mid = (start + end)/2;
+            TreeNode node = arr.get(mid);
+            node.left = dfs(arr, start, mid-1);
+            node.right = dfs(arr, mid+1, end);
+            return node;
+        }
+        return null;
+    }
+    
+    public void inorder(TreeNode node, List<TreeNode> arr){
+        if(node == null){
+            return;
+        }
+        inorder(node.left, arr);
+        arr.add(node);
+        inorder(node.right, arr);
+    }
+}
