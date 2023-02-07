@@ -1,0 +1,26 @@
+class Solution {
+    ArrayList<Integer> arr = new ArrayList<>();
+    public void flatten(TreeNode root) {
+        if(root==null)
+            return;
+        preorder(root,arr);
+        root.left = null;
+        TreeNode curr = root;
+        for(int i=1;i<arr.size();i++)
+        {
+            curr.right = new TreeNode(arr.get(i));
+            curr = curr.right;
+
+        }
+            
+    
+    }
+    public void preorder(TreeNode root,ArrayList<Integer> arr){
+        if(root==null){
+            return ;
+        }
+        arr.add(root.val);
+        preorder(root.left,arr);       
+        preorder(root.right,arr);
+    }
+}
