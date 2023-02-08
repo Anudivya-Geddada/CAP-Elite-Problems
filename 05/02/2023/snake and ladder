@@ -1,0 +1,136 @@
+import java.util.HashMap;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Map;
+class SnakeNLadder{
+    static Map<Integer,Integer> snake = new HashMap<Integer,Integer>();
+    static Map<Integer,Integer> ladder = new HashMap<Integer,Integer>();
+    {
+        snake.put(98,85);
+        snake.put(90,71);
+        snake.put(88,62);
+        snake.put(75,65);
+        snake.put(43,18);
+        snake.put(20,13);
+        snake.put(9,3);
+        ladder.put(73,86);
+        ladder.put(64,75);
+        ladder.put(42,60);
+        ladder.put(33,36);
+        ladder.put(23,30);
+        ladder.put(17,25);
+        ladder.put(5,12);
+    }
+    public int findsnake(int player){
+        if(snake.containsKey(player)){
+            System.out.println("Snake Swallowed");
+            return snake.get(player);
+        }
+        return player;
+    }
+    public int findladder(int player){
+        if(ladder.containsKey(player)){
+            System.out.println("Climb the ladder");
+            return ladder.get(player);
+        }
+        return player;
+       
+    }
+       
+}
+class Player{
+    final static int win = 100;
+    SnakeNLadder sandl = new SnakeNLadder();
+    public int Playerposition(int player1,int dice_val){
+        player1 = player1+dice_val;
+        int player = sandl.findsnake(player1);
+        player = sandl.findladder(player1);
+        if(player>win){
+            player = player - dice_val;
+            return player;
+        }
+        return player;
+    }
+    public boolean iswin(int player){
+        return win == player;
+    }
+   
+}
+interface Dice
+{
+int rollDice();
+}
+class Game implements Dice{
+    public int rollDice(){
+        int n = 0;
+        Random r = new Random();
+        n = r.nextInt(7);
+        return (n==0?1:n);
+    }
+    public void startGame(){
+        int player1 = 0, player2 = 0;
+        int currentplayer = -1;
+        Player p1 = new Player();
+        Scanner in = new Scanner(System.in);
+        String str;
+        int dice_val = 0;
+        do{
+            System.out.println(currentplayer==-1?"\n\n First Player Turn": "Second Player Turn");
+            System.out.println("Press d to roll Dice");
+            str = in.next();
+            dice_val = rollDice();
+            if(currentplayer==-1){
+                player1 = p1.Playerposition(player1,dice_val);
+                System.out.println("First Player:"+player1);
+                System.out.println("Second Player:"+player2);
+                System.out.println("----------------");
+                if(p1.iswin(player1)){
+                    System.out.println("player1 wins the game");
+                    return;
+                }
+            }
+            else{
+                player2 = p1.Playerposition(player2,dice_val);
+                System.out.println("First Player:"+player1);
+                System.out.println("Second Player:"+player2);
+                System.out.println("----------------");
+                if(p1.iswin(player2)){
+                    System.out.println("player2 wins the game");
+                    return;
+                }
+            }
+            currentplayer = -currentplayer;
+           
+           
+            }while("d".equals(str));
+           
+       
+       
+       
+    }
+
+}
+class Board{
+    public void boardgame(int counter){
+        System.out.println("-------------------GameBoard-------------");
+        while(counter>0){
+            if(counter%10==0 && counter!=100){
+                if(counter!=0)
+                    System.out.print("\n"+counter+"\t");
+            }
+            else
+                System.out.print(counter+"\t");
+                counter +=-1;
+        }
+        System.out.println();
+        System.out.println("--------------------");
+    }
+}
+public class Main{
+    public static void main(String[] args){
+        Board board = new Board();
+        board.boardgame(100);
+        Game game = new Game();
+        game.startGame();
+    }
+}    
